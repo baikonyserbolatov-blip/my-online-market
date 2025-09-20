@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Market — продажа идей и фантастики</title>
+<style>
+:root{
+  --bg:#0f1724;
+  --card-bg:#0b1220;
+  --accent1:#6EE7B7;
+  --accent2:#60A5FA;
+  --glass: rgba(255,255,255,0.04);
+  --white: #f8fafc;
+  --muted: #b6c2d1;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Arial,system-ui;background:linear-gradient(180deg,#071126 0%, #071430 60%);color:var(--white);-webkit-font-smoothing:antialiased}
+.container{max-width:1100px;margin:24px auto;padding:20px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent2),var(--accent1));display:flex;align-items:center;justify-content:center;font-weight:700;color:#04233b}
+.title{font-size:20px;font-weight:700}
+.menu{display:flex;gap:10px}
+.btn{background:linear-gradient(90deg,var(--accent2),var(--accent1));border:none;padding:8px 14px;border-radius:10px;color:#021426;cursor:pointer;font-weight:600}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);padding:8px 12px;border-radius:10px;color:var(--white);cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 320px;gap:20px;margin-top:18px}
+.main{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:18px;border-radius:14px;min-height:520px}
+.sidebar{padding:18px;border-radius:14px;background:var(--card-bg);box-shadow:0 6px 24px rgba(2,6,23,0.6)}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.tabs{display:flex;gap:8px}
+.tab{padding:8px 12px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.04);cursor:pointer}
+.tab.active{background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#021426;border:0}
+.hero{display:flex;gap:18px;align-items:center;padding:18px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+.hero .text{flex:1;text-align:left}
+.hero h2{margin:0;font-size:22px}
+.hero p{margin:6px 0;color:var(--muted)}
+.hero .cta{margin-top:10px}
+.card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}
+.item{background:var(--glass);padding:12px;border-radius:12px;position:relative;overflow:hidden;min-height:160px;display:flex;gap:12px}
+.item .left{width:120px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.item img{width:100%;height:100%;object-fit:cover;border-radius:8px}
+.item .content{flex:1;display:flex;flex-direction:column;justify-content:space-between}
+.tag{position:absolute;right:10px;top:10px;padding:6px 8px;border-radius:8px;font-size:12px;background:rgba(0,0,0,0.25)}
+.title{font-weight:800;margin:0 0 6px 0}
+.desc{color:var(--muted);font-size:13px;margin-bottom:10px;min-height:36px}
+.price-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.points{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-weight:700}
+.buy-row{display:flex;gap:8px;margin-top:10px}
+.small{font-size:13px;color:var(--muted)}
+.footer{margin-top:18px;padding:16px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.socials{display:flex;gap:10px}
+.social{padding:8px 10px;border-radius:10px;background:rgba(255,255,255,0.03);color:var(--white);font-weight:600}
+.modal{position:fixed;inset:0;background:linear-gradient(90deg,rgba(2,6,23,0.7),rgba(2,6,23,0.85));display:flex;align-items:center;justify-content:center;z-index:60}
+.box{background:linear-gradient(180deg,#041227,#071430);padding:18px;border-radius:12px;max-width:720px;width:96%}
+.input, .input-compact, .textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--white);margin-top:8px}
+.input-compact{padding:8px;width:140px}
+.textarea{min-height:80px}
+.link-out{display:inline-block;padding:8px 12px;border-radius:8px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#04233b;font-weight:700;text-decoration:none}
+.notice{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;color:var(--muted);margin-top:12px}
+.hidden{display:none}
+.legend{font-size:13px;color:var(--muted);margin-top:8px}
+.review{background:rgba(255,255,255,0.02);padding:8px;border-radius:8px;margin-top:8px}
+.stars{color:#ffd166;font-weight:700}
+@media(max-width:900px){.grid{grid-template-columns:1fr;}.card-grid{grid-template-columns:1fr}.item{flex-direction:row}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="brand">
+      <div class="logo">MK</div>
+      <div>
+        <div class="title">Market — проект продажи</div>
+        <div class="small">Продавай идеи, фильмы, книги и фантастику</div>
+      </div>
+    </div>
+    <div class="menu">
+      <button class="btn" id="open-main">Товары</button>
+      <button class="btn-ghost" id="open-secret">Секретный сектор (по коду)</button>
+      <button class="btn-ghost" id="reset-purchase">Сбросить покупки</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="main" id="main-area">
+      <div class="section-header">
+        <div>
+          <div style="font-weight:800;font-size:18px">Главный магазин</div>
+          <div class="legend">Выбирай товар, нажимай «Купить», вводи код, получай ссылку и баллы</div>
+        </div>
+        <div class="tabs">
+          <button class="tab active" data-cat="ideas">Идеи</button>
+          <button class="tab" data-cat="films">Фильмы</button>
+          <button class="tab" data-cat="books">Книги</button>
+        </div>
+      </div>
+
+      <div class="hero">
+        <div class="text">
+          <h2>Товары для мотивации и идей</h2>
+          <p>Каждый товар имеет оценку по 100-балльной шкале (в основном 85+). Для получения реальной ссылки на товар введите цифровой код после нажатия «Купить». Автор рекомендует часть ассортимента.</p>
+          <div class="cta">
+            <button class="btn" onclick="scrollToCatalog()">Перейти к товарам</button>
+          </div>
+        </div>
+        <div>
+          <div style="width:84px;height:84px;border-radius:10px;background:linear-gradient(135deg,#fff2, #fff1);display:flex;align-items:center;justify-content:center;font-weight:700;color:#021426">🌟</div>
+        </div>
+      </div>
+
+      <div id="catalog" class="card-grid"></div>
+
+      <div class="footer">
+        <div>
+          <div style="font-weight:700">О нас</div>
+          <div class="small">Я — автор проекта. Здесь продаю идеи, мотивацию и фантастику. Авторские рекомендации присутствуют в карточках товаров.</div>
+        </div>
+        <div class="socials">
+          <div class="social">Instagram</div>
+          <div class="social">Telegram</div>
+          <div class="social">VK</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div style="font-weight:800;font-size:16px">Информация</div>
+      <div class="notice">В первом разделе товары проверены автором. Для доступа к ссылке необходим код у каждого товара. Цены указаны в баллах и тенге.</div>
+      <div style="margin-top:12px">
+        <div style="font-weight:700">Корзина</div>
+        <div id="cart" class="legend">Пока покупок нет</div>
+      </div>
+      <div style="margin-top:14px">
+        <div style="font-weight:700">Статус</div>
+        <div id="status" class="legend">Готов продавать</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="modal" class="modal hidden">
+  <div class="box">
+    <div id="modal-title" style="font-weight:800;font-size:18px"></div>
+    <div id="modal-header" style="display:flex;gap:12px;margin-top:8px;align-items:center">
+      <div style="width:120px;height:80px;border-radius:8px;overflow:hidden;background:#000"><img id="modal-img" src="" alt="" style="width:100%;height:100%;object-fit:cover"/></div>
+      <div style="flex:1">
+        <div id="modal-desc" class="small"></div>
+        <div style="margin-top:8px"><span style="font-weight:700">Автор рекомендует:</span> <span id="modal-author" class="small"></span></div>
+        <div style="margin-top:8px"><span style="font-weight:700">Почему стоит купить:</span><div id="modal-why" class="small" style="margin-top:6px"></div></div>
+      </div>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;gap:10px;margin-top:12px">
+      <div><span class="small">Баллы</span><div id="modal-points" class="points" style="margin-top:6px">0/100</div></div>
+      <div><span class="small">Стоимость</span><div id="modal-tenge" class="points" style="margin-top:6px">0 ₸</div></div>
+    </div>
+
+    <div style="margin-top:12px">
+      <input id="code-input" class="input" placeholder="Введите цифровой код для получения ссылки" inputmode="numeric" />
+      <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end">
+        <button class="btn-ghost" id="modal-close">Отмена</button>
+        <button class="btn" id="modal-check">Проверить код</button>
+      </div>
+      <div id="modal-result" class="small legend hidden" style="margin-top:12px"></div>
+    </div>
+
+    <div style="margin-top:14px">
+      <div style="font-weight:700">Отзывы</div>
+      <div id="author-reco" class="review" style="margin-top:8px;font-weight:700"></div>
+      <div id="reviews-list" style="margin-top:8px"></div>
+      <div style="margin-top:10px;font-weight:700">Оставить отзыв</div>
+      <input id="rv-name" class="input" placeholder="Имя" />
+      <select id="rv-stars" class="input" style="margin-top:8px">
+        <option value="5">★★★★★ (5)</option>
+        <option value="4">★★★★ (4)</option>
+        <option value="3">★★★ (3)</option>
+        <option value="2">★★ (2)</option>
+        <option value="1">★ (1)</option>
+      </select>
+      <textarea id="rv-text" class="textarea" placeholder="Комментарий"></textarea>
+      <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:8px">
+        <button class="btn" id="rv-submit">Отправить отзыв</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="secret-modal" class="modal hidden">
+  <div class="box">
+    <div style="font-weight:800;font-size:18px">Вход в Секретный сектор</div>
+    <div class="small" style="margin-top:8px">Введите 4-значный код, чтобы открыть секцию (3 попытки).</div>
+    <input id="secret-input" class="input-compact" placeholder="____" maxlength="4" inputmode="numeric" />
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+      <button class="btn-ghost" id="secret-cancel">Отмена</button>
+      <button class="btn" id="secret-go">Войти</button>
+    </div>
+    <div id="secret-msg" class="legend" style="margin-top:10px"></div>
+  </div>
+</div>
+
+<div id="secret-area" class="modal hidden" style="align-items:flex-start;overflow:auto;padding-top:40px">
+  <div class="box" style="max-width:960px;width:96%;margin-bottom:40px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-weight:900;font-size:20px">Секретный сектор — Фантастические товары</div>
+      <div style="display:flex;gap:8px">
+        <button class="btn-ghost" id="secret-exit">Выйти</button>
+      </div>
+    </div>
+    <div class="notice" style="margin-top:12px">Эти товары — художественная концепция. Для входа использовался 4-значный код.</div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px">
+      <div style="background:linear-gradient(180deg,#021f2f,#042436);padding:14px;border-radius:12px">
+        <div style="font-weight:800">Таблетки эмоций</div>
+        <div class="small" style="margin-top:8px">Три вида: Радость, Смех, Спокойствие.</div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn" onclick="openSecretItem('pill1')">Радость</button>
+          <button class="btn" onclick="openSecretItem('pill2')">Смех</button>
+          <button class="btn" onclick="openSecretItem('pill3')">Спокойствие</button>
+        </div>
+      </div>
+      <div style="background:linear-gradient(180deg,#1b1430,#2a1b3d);padding:14px;border-radius:12px">
+        <div style="font-weight:800">Парфюмы способностей</div>
+        <div class="small" style="margin-top:8px">Три парфюма: уверенность, притяжение, ум.</div>
+        <div style="margin-top:10px;display:flex;gap:8px">
+          <button class="btn" onclick="openSecretItem('perfume1')">Уверенность</button>
+          <button class="btn" onclick="openSecretItem('perfume2')">Притяжение</button>
+          <button class="btn" onclick="openSecretItem('perfume3')">Ум</button>
+        </div>
+      </div>
+      <div style="grid-column:1/3;background:linear-gradient(180deg,#20161f,#2d1f2a);padding:14px;border-radius:12px">
+        <div style="font-weight:900;font-size:18px">Артефакт — Очки истины</div>
+        <div class="small" style="margin-top:8px">Артефакт: режим «истина» и режим «мысли». Художественная идея; цены рубежные.</div>
+        <div style="margin-top:12px;display:flex;gap:8px">
+          <button class="btn" onclick="openSecretItem('glasses')">Посмотреть очки</button>
+        </div>
+      </div>
+    </div>
+    <div id="secret-item-modal" class="hidden" style="margin-top:12px;padding:12px;border-radius:10px;background:linear-gradient(90deg,#0008,#0006)"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  items: [
+    {id:'idea1',cat:'ideas',title:'Идея: Шпаргалка успеха',desc:'Практическая коллекция приёмов для продуктивности',points:88,price:4400,code:'1010',link:'https://example.com/idea1',img:'https://picsum.photos/seed/idea1/300/200'},
+    {id:'idea2',cat:'ideas',title:'Идея: Мини-бизнес на дому',desc:'Пошаговая структура для старта малого бизнеса',points:86,price:4100,code:'1011',link:'https://example.com/idea2',img:'https://picsum.photos/seed/idea2/300/200'},
+    {id:'idea3',cat:'ideas',title:'Идея: Курс по самоорганизации',desc:'30-дневный план дисциплины и привычек',points:90,price:5000,code:'1012',link:'https://example.com/idea3',img:'https://picsum.photos/seed/idea3/300/200'},
+    {id:'idea4',cat:'ideas',title:'Идея: Мобильный проект',desc:'Концепт приложения с простым MVP',points:85,price:3950,code:'1013',link:'https://example.com/idea4',img:'https://picsum.photos/seed/idea4/300/200'},
+    {id:'idea5',cat:'ideas',title:'Идея: Комьюнити платформа',desc:'Как собрать и удержать аудиторию',points:87,price:4250,code:'1014',link:'https://example.com/idea5',img:'https://picsum.photos/seed/idea5/300/200'},
+    {id:'idea6',cat:'ideas',title:'Идея: Креативный мерч',desc:'Концепт товара с потенциалом прибыли',points:85,price:3800,code:'1015',link:'https://example.com/idea6',img:'https://picsum.photos/seed/idea6/300/200'},
+
+    {id:'film1',cat:'films',title:'Фильм: Вдохновение 1',desc:'Мотивирующий фильм — 90 минут энергии',points:91,price:4550,code:'2010',link:'https://example.com/film1',img:'https://picsum.photos/seed/film1/300/200'},
+    {id:'film2',cat:'films',title:'Фильм: Вдохновение 2',desc:'История про преодоление и рост',points:89,price:4350,code:'2011',link:'https://example.com/film2',img:'https://picsum.photos/seed/film2/300/200'},
+    {id:'film3',cat:'films',title:'Фильм: Действуй',desc:'Короткий фильм для старта дня',points:88,price:4200,code:'2012',link:'https://example.com/film3',img:'https://picsum.photos/seed/film3/300/200'},
+    {id:'film4',cat:'films',title:'Фильм: Мастерство',desc:'О том, как становиться лучше каждый день',points:90,price:4450,code:'2013',link:'https://example.com/film4',img:'https://picsum.photos/seed/film4/300/200'},
+    {id:'film5',cat:'films',title:'Фильм: На грани',desc:'Мотиватор про риски и награды',points:85,price:4000,code:'2014',link:'https://example.com/film5',img:'https://picsum.photos/seed/film5/300/200'},
+    {id:'film6',cat:'films',title:'Фильм: Перезагрузка',desc:'О важности пауз и действий',points:86,price:4150,code:'2015',link:'https://example.com/film6',img:'https://picsum.photos/seed/film6/300/200'},
+
+    {id:'book1',cat:'books',title:'Книга: Мотивация 101',desc:'Краткое руководство по ежедневной мотивации',points:87,price:4300,code:'3010',link:'https://example.com/book1',img:'https://picsum.photos/seed/book1/300/200'},
+    {id:'book2',cat:'books',title:'Книга: Режим победителя',desc:'План на 66 дней для устойчивых изменений',points:92,price:4600,code:'3011',link:'https://example.com/book2',img:'https://picsum.photos/seed/book2/300/200'},
+    {id:'book3',cat:'books',title:'Книга: Малые шаги',desc:'Как маленькие привычки дают результат',points:85,price:3900,code:'3012',link:'https://example.com/book3',img:'https://picsum.photos/seed/book3/300/200'}
+  ],
+  secret:{
+    key:'4321',
+    attempts:3,
+    items:{
+      pill1:{title:'Таблетка: Радость',desc:'Мягкая волна подъёма настроения; безопасная художественная концепция.',points:95,price:150000,code:'9001'},
+      pill2:{title:'Таблетка: Смех',desc:'Вызывает искреннее веселье и помогает забыть тревоги; художественно.',points:96,price:120000,code:'9002'},
+      pill3:{title:'Таблетка: Спокойствие',desc:'Глубокое внутреннее спокойствие; художественная концепция.',points:95,price:130000,code:'9003'},
+      perfume1:{title:'Парфюм: Уверенность',desc:'Аромат, усиливающий уверенность при общении.',points:97,price:98000,code:'9101'},
+      perfume2:{title:'Парфюм: Притяжение',desc:'Нота для повышенного внимания окружающих.',points:96,price:120000,code:'9102'},
+      perfume3:{title:'Парфюм: Ум',desc:'Аромат, создающий фокус и ясность (образно).',points:98,price:140000,code:'9103'},
+      glasses:{title:'Очки истины',desc:'Артефакт: режим «истина» и режим «мысли». Художественная идея.',points:100,price:999000,code:'9999'}
+    }
+  }
+};
+
+let currentCategory = 'ideas';
+let openedItem = null;
+let purchases = JSON.parse(localStorage.getItem('purchases')||'[]');
+let reviews = JSON.parse(localStorage.getItem('reviews')||'{}');
+
+function formatTenge(n){return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g," ") + ' ₸'}
+
+function saveReviews(){localStorage.setItem('reviews',JSON.stringify(reviews))}
+
+function getReviews(id){return reviews[id]||[]}
+
+function addReview(id,name,stars,text){
+  if(!reviews[id]) reviews[id]=[];
+  reviews[id].unshift({name,stars,text,time:Date.now()});
+  saveReviews();
+}
+
+function renderCatalog(){
+  const catalog = document.getElementById('catalog');
+  catalog.innerHTML = '';
+  const visible = DATA.items.filter(i=>i.cat===currentCategory);
+  visible.forEach(it=>{
+    const el = document.createElement('div');
+    el.className='item';
+    el.innerHTML = `
+      <div class="left"><img src="${it.img}" alt="${it.title}"/></div>
+      <div class="content">
+        <div>
+          <div class="tag">${it.cat==='ideas'?'IDEA': it.cat==='films'?'FILM':'BOOK'}</div>
+          <div class="title">${it.title}</div>
+          <div class="desc">${it.desc}</div>
+        </div>
+        <div>
+          <div class="price-row">
+            <div class="points">${it.points}/100</div>
+            <div class="small">${formatTenge(it.price)}</div>
+          </div>
+          <div class="buy-row">
+            <button class="btn" onclick="openBuy('${it.id}')">Купить</button>
+            <button class="btn-ghost" onclick="previewLink(event,'${it.id}')">Просмотр</button>
+            <button class="btn-ghost" onclick="openReviews('${it.id}')">Отзывы</button>
+          </div>
+        </div>
+      </div>
+    `;
+    catalog.appendChild(el);
+  });
+}
+
+function previewLink(e,id){
+  e.preventDefault();
+  alert('Для получения реальной ссылки нужно купить товар и ввести код.');
+}
+
+function openBuy(id){
+  openedItem = DATA.items.find(x=>x.id===id);
+  document.getElementById('modal-title').innerText = openedItem.title;
+  document.getElementById('modal-desc').innerText = openedItem.desc;
+  document.getElementById('modal-img').src = openedItem.img;
+  document.getElementById('modal-points').innerText = openedItem.points + '/100';
+  document.getElementById('modal-tenge').innerText = formatTenge(openedItem.price);
+  document.getElementById('modal-author').innerText = 'Автор рекомендует этот товар как полезный и проверенный.';
+  document.getElementById('modal-why').innerText = whyBuyText(openedItem);
+  document.getElementById('modal-result').classList.add('hidden');
+  document.getElementById('code-input').value='';
+  renderReviewsForModal(openedItem.id);
+  document.getElementById('modal').classList.remove('hidden');
+}
+
+function whyBuyText(it){
+  return `Что вы получаете: понятную структуру и готовый материал для действия; проверенные идеи и качественный контент. Уникальность: собранный автором набор, который экономит время и даёт практические шаги. Социальное доказательство: положительные отзывы от пользователей. Это инструмент для роста и эффективности.`;
+}
+
+document.getElementById('modal-close').addEventListener('click',()=>{document.getElementById('modal').classList.add('hidden')});
+document.getElementById('modal-check').addEventListener('click',()=>{
+  const code = document.getElementById('code-input').value.trim();
+  const res = document.getElementById('modal-result');
+  if(!code){res.innerText='Введите код.';res.classList.remove('hidden');return}
+  if(openedItem && code === openedItem.code){
+    res.innerHTML = '✅ Код верный. Ссылка: <a class="link-out" target="_blank" href="'+openedItem.link+'">Перейти к товару</a>';
+    res.classList.remove('hidden');
+    purchases.push({id:openedItem.id,time:Date.now()});
+    localStorage.setItem('purchases',JSON.stringify(purchases));
+    updateCart();
+  } else {
+    res.innerText='Неверный код.';
+    res.classList.remove('hidden');
+  }
+});
+
+function renderReviewsForModal(id){
+  const list = document.getElementById('reviews-list');
+  list.innerHTML = '';
+  const arr = getReviews(id);
+  arr.slice(0,8).forEach(r=>{
+    const el = document.createElement('div');
+    el.className='review';
+    el.innerHTML = `<div style="font-weight:700">${escapeHtml(r.name)} <span class="stars"> ${'★'.repeat(r.stars)}</span></div><div class="small" style="margin-top:6px">${escapeHtml(r.text)}</div>`;
+    list.appendChild(el);
+  });
+  document.getElementById('author-reco').innerText = 'Автор рекомендует этот товар.';
+}
+
+document.getElementById('rv-submit').addEventListener('click',()=>{
+  const name = (document.getElementById('rv-name').value||'Покупатель').trim();
+  const stars = parseInt(document.getElementById('rv-stars').value||5,10);
+  const text = (document.getElementById('rv-text').value||'').trim();
+  if(!openedItem){alert('Откройте товар');return}
+  if(!text){alert('Напишите комментарий');return}
+  addReview(openedItem.id,name,stars,text);
+  renderReviewsForModal(openedItem.id);
+  document.getElementById('rv-name').value='';document.getElementById('rv-text').value='';
+});
+
+function openReviews(id){
+  const it = DATA.items.find(x=>x.id===id);
+  openBuy(id);
+}
+
+function updateCart(){
+  const cart = document.getElementById('cart');
+  if(purchases.length===0){cart.innerText='Пока покупок нет';document.getElementById('status').innerText='Готов продавать';return}
+  cart.innerHTML = purchases.map(p => {
+    const it = DATA.items.find(x=>x.id===p.id) || {title:p.id,price:0,points:0};
+    return `<div style="margin-bottom:6px;font-weight:700">${it.title} — ${it.points}/100 — ${formatTenge(it.price)}</div>`;
+  }).join('');
+  document.getElementById('status').innerText = 'Есть покупки';
+}
+
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click', ()=> {
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    currentCategory = t.getAttribute('data-cat');
+    renderCatalog();
+  });
+});
+
+function scrollToCatalog(){document.getElementById('catalog').scrollIntoView({behavior:'smooth'})}
+document.getElementById('open-main').addEventListener('click',()=>{document.getElementById('main-area').scrollIntoView({behavior:'smooth'})})
+
+document.getElementById('open-secret').addEventListener('click',()=>{
+  document.getElementById('secret-modal').classList.remove('hidden');
+});
+
+let secretAttempts = DATA.secret.attempts;
+document.getElementById('secret-go').addEventListener('click',()=>{
+  const v = document.getElementById('secret-input').value.trim();
+  const msg = document.getElementById('secret-msg');
+  if(v===DATA.secret.key){
+    document.getElementById('secret-modal').classList.add('hidden');
+    document.getElementById('secret-area').classList.remove('hidden');
+    msg.innerText='';
+  } else {
+    secretAttempts--;
+    if(secretAttempts<=0){msg.innerText='Коды попыток исчерпаны.'; document.getElementById('secret-go').disabled=true; return}
+    msg.innerText = 'Неверно. Осталось попыток: '+secretAttempts;
+  }
+});
+document.getElementById('secret-cancel').addEventListener('click',()=>{document.getElementById('secret-modal').classList.add('hidden')});
+document.getElementById('secret-exit').addEventListener('click',()=>{
+  document.getElementById('secret-area').classList.add('hidden');
+});
+
+function openSecretItem(key){
+  const s = DATA.secret.items[key];
+  const modal = document.getElementById('secret-item-modal');
+  modal.classList.remove('hidden');
+  modal.innerHTML = `<div style="font-weight:800">${s.title}</div>
+    <div class="small" style="margin-top:8px">${s.desc}</div>
+    <div style="margin-top:10px" class="small">Оценка: ${s.points}/100 — Цена: ${formatTenge(s.price)}</div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <input id="secret-code-input" class="input-compact" placeholder="Код" maxlength="6" />
+      <button class="btn" onclick="checkSecretCode('${key}')">Ввести</button>
+    </div>
+    <div id="secret-result" class="legend" style="margin-top:8px"></div>`;
+}
+
+function checkSecretCode(key){
+  const val = document.getElementById('secret-code-input').value.trim();
+  const res = document.getElementById('secret-result');
+  const s = DATA.secret.items[key];
+  if(val===s.code){
+    res.innerHTML = '✅ Код принят. Подробности покупки: <a class="link-out" target="_blank" href="#">Перейти</a>';
+    purchases.push({id:'secret:'+key,time:Date.now()});
+    localStorage.setItem('purchases',JSON.stringify(purchases));
+    updateCart();
+  } else {
+    res.innerText = 'Неверный код.';
+  }
+}
+
+document.getElementById('reset-purchase').addEventListener('click',()=>{
+  purchases = []; localStorage.removeItem('purchases'); updateCart();
+  alert('Покупки сброшены');
+});
+
+function escapeHtml(str){return String(str).replace(/[&<>"']/g, s=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[s]))}
+
+renderCatalog();
+updateCart();
+</script>
+</body>
+</html>
