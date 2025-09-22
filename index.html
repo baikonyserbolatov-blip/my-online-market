@@ -3,184 +3,279 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Секретный сектор</title>
+<title>Магазин — идеи, фильмы, книги</title>
 <style>
-  :root{--bg:#071029;--card:#0b1220;--accent:#f59e0b;--muted:#9aa4b2}
-  body{margin:0;background:linear-gradient(180deg,#071029,#021024);font-family:Inter,Arial,sans-serif;color:#fff}
-  header{padding:18px;text-align:center;background:rgba(255,255,255,0.03)}
-  .wrap{max-width:980px;margin:26px auto;padding:0 16px}
-  .panel{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px}
-  .card{background:linear-gradient(180deg,#081226,#091a2e);border-radius:10px;padding:12px}
-  .card h3{margin:6px 0}
-  .card p{color:var(--muted);font-size:14px}
-  .price{color:var(--accent);font-weight:800;margin-top:8px}
-  .btn{margin-top:10px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#081226;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:800}
-  .login-screen{max-width:420px;margin:40px auto;text-align:center}
-  input{padding:10px;border-radius:8px;border:0;width:80%;margin-top:12px}
+  :root{--bg:#f4f6fb;--card:#ffffff;--muted:#6b7280;--accent:#2463f0;--ok:#16a34a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family:Inter,Arial,Helvetica,sans-serif;color:#111}
+  header{background:linear-gradient(90deg,#0f172a,#0b2546);color:#fff;padding:18px 12px;text-align:center}
+  header h1{margin:0;font-size:20px}
+  nav{display:flex;justify-content:center;gap:10px;padding:12px;background:#0c1a33}
+  nav button{background:#fff;border-radius:10px;padding:8px 12px;border:0;cursor:pointer;font-weight:700}
+  .wrap{max-width:1100px;margin:22px auto;padding:0 16px}
+  h2{margin:12px 0}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(15,23,42,0.06);display:flex;flex-direction:column;min-height:170px}
+  .card .title{font-weight:800;margin:0 0 8px}
+  .card .desc{color:var(--muted);font-size:14px;min-height:44px}
+  .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+  .badge{background:rgba(36,99,240,0.08);color:var(--accent);padding:6px 8px;border-radius:8px;font-weight:700}
+  .price{font-weight:800}
+  .btn{background:linear-gradient(90deg,var(--accent),#0a84ff);color:#fff;border:0;padding:10px 12px;border-radius:10px;cursor:pointer;font-weight:700}
+  .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:#111}
+  .img-wrap{width:100%;height:160px;overflow:hidden;border-radius:8px;margin-bottom:10px;background:#eee;display:flex;align-items:center;justify-content:center}
+  .img-wrap img{width:100%;height:100%;object-fit:cover}
+  .section{margin-bottom:28px}
+  .note{color:var(--muted);font-size:13px;margin-top:8px}
+  footer{background:#0c1a33;color:#fff;padding:18px;text-align:center;margin-top:30px;border-top-left-radius:12px;border-top-right-radius:12px}
+  /* modal */
+  .overlay{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;z-index:80}
+  .modal{background:#0b1220;color:#fff;padding:18px;border-radius:12px;max-width:520px;width:94%}
+  .input{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#fff;margin-top:8px}
+  .reviews{margin-top:12px;background:rgba(2,6,23,0.04);padding:10px;border-radius:8px}
+  .review{padding:8px 0;border-bottom:1px dashed rgba(0,0,0,0.06)}
   .small{font-size:13px;color:var(--muted)}
-  .hidden{display:none}
+  @media(max-width:600px){.img-wrap{height:140px}}
 </style>
 </head>
 <body>
-<header><h1>Секретный сектор</h1><div class="small">Доступ только по коду</div></header>
+
+<header>
+  <h1>Магазин: идеи • фильмы • книги</h1>
+  <div class="small">Автор рекомендует: проверенные материалы и вдохновляющие подборки</div>
+</header>
+
+<nav>
+  <button onclick="scrollToSection('ideas')">Идеи</button>
+  <button onclick="scrollToSection('films')">Фильмы</button>
+  <button onclick="scrollToSection('books')">Книги</button>
+  <button onclick="openSecretPrompt()">Секретный сектор</button>
+</nav>
 
 <div class="wrap">
-  <div id="login" class="panel login-screen">
-    <h2>Введите код</h2>
-    <input id="secret-input" placeholder="4 цифры" inputmode="numeric" maxlength="6">
+  <!-- IDEAS -->
+  <section id="ideas" class="section">
+    <h2>Идеи (без изображений)</h2>
+    <div class="note">Идеи — текстовые продукты: понятные планы, чек-листы и концепты.</div>
+    <div id="ideas-grid" class="grid" style="margin-top:12px"></div>
+  </section>
+
+  <!-- FILMS -->
+  <section id="films" class="section">
+    <h2>Фильмы</h2>
+    <div class="note">Фильмы с качественными постерами и рабочими ссылками.</div>
+    <div id="films-grid" class="grid" style="margin-top:12px"></div>
+  </section>
+
+  <!-- BOOKS -->
+  <section id="books" class="section">
+    <h2>Книги</h2>
+    <div class="note">Книги с обложками и ссылками на страницы (Google Books / Goodreads).</div>
+    <div id="books-grid" class="grid" style="margin-top:12px"></div>
+  </section>
+
+  <!-- О нас / Корзина простая -->
+  <section class="section">
+    <h2>О нас</h2>
+    <div class="note">Я — автор этого проекта. Здесь продаются идеи, мотивационные фильмы и книги. Авторские рекомендации в карточках.</div>
     <div style="margin-top:12px">
-      <button class="btn" onclick="checkSecret()">Войти</button>
+      <strong>Корзина (покупки):</strong>
+      <div id="cart" class="note">Пока покупок нет</div>
     </div>
-    <div id="login-msg" class="small" style="margin-top:8px;color:#fecaca"></div>
-  </div>
-
-  <div id="content" class="hidden">
-    <div class="panel">
-      <h2>Эмоции (художественная концепция)</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Таблетка: Радость</h3>
-          <p>Мягкая, тёплая волна подъёма настроения — помогает видеть светлые стороны и активнее действовать.</p>
-          <div class="price">95 баллов | 150 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('pill1')">Купить</button>
-        </div>
-        <div class="card">
-          <h3>Таблетка: Смех</h3>
-          <p>Подарит лёгкость и искренний смех; снимает тяжесть и возвращает лёгкость общения.</p>
-          <div class="price">96 баллов | 120 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('pill2')">Купить</button>
-        </div>
-        <div class="card">
-          <h3>Таблетка: Спокойствие</h3>
-          <p>Глубокое внутреннее спокойствие без отвлекающих мыслей; помогает сфокусироваться на главном.</p>
-          <div class="price">95 баллов | 130 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('pill3')">Купить</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-top:16px">
-      <h2>Парфюмы способностей</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Уверенность высшего уровня</h3>
-          <p>Аромат, который подчёркивает осанку и голос — помогает чувствовать себя увереннее в деловых и личных ситуациях.</p>
-          <div class="price">97 баллов | 98 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('perfume1')">Купить</button>
-        </div>
-        <div class="card">
-          <h3>Мечта девушек</h3>
-          <p>Ноты, которые создают приятное впечатление и повышают притяжение — для тех, кто хочет усилить харизму.</p>
-          <div class="price">96 баллов | 120 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('perfume2')">Купить</button>
-        </div>
-        <div class="card">
-          <h3>Улучшение ума</h3>
-          <p>Аромат, стимулирующий концентрацию и ясность — помогает в учебе и работе (образно).</p>
-          <div class="price">98 баллов | 140 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('perfume3')">Купить</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel" style="margin-top:16px">
-      <h2>Артефакты — Очки</h2>
-      <div class="grid">
-        <div class="card">
-          <h3>Очки: Чтение мыслей</h3>
-          <p>Позволяют воспринимать эмоции и домыслы собеседника (художественно). Редкий артефакт для особых случаев.</p>
-          <div class="price">100 баллов | 999 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('glasses_read')">Купить</button>
-        </div>
-        <div class="card">
-          <h3>Очки: Правда/Ложь</h3>
-          <p>Режим отображает признаки правды и лжи в речи — помогает в переговорах и общении (художественно).</p>
-          <div class="price">99 баллов | 800 000 ₸</div>
-          <button class="btn" onclick="openSecretBuy('glasses_truth')">Купить</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  </section>
 </div>
 
-<!-- secret buy modal -->
-<div id="overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:90">
-  <div style="background:#071029;padding:18px;border-radius:10px;max-width:520px;width:92%;color:#fff">
-    <div id="s-title" style="font-weight:800"></div>
-    <div id="s-desc" class="small" style="margin-top:8px"></div>
-    <div style="margin-top:10px">
-      <input id="s-code" placeholder="Введите код товара" style="padding:10px;border-radius:8px;width:100%;border:0">
+<footer>
+  <div>Контакты: Instagram | Telegram | VK</div>
+  <div class="small">Файлы: index.html и secret.html должны лежать в корне репозитория (GitHub Pages)</div>
+</footer>
+
+<!-- modal for buy -->
+<div id="overlay" class="overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div id="modal-title" style="font-weight:800;font-size:18px"></div>
+    <div id="modal-desc" class="small" style="margin-top:8px"></div>
+    <div id="modal-why" style="margin-top:8px;color:#dbeafe"></div>
+    <div style="display:flex;gap:10px;margin-top:12px">
+      <div style="flex:1">
+        <div class="small">Баллы</div>
+        <div id="modal-points" style="font-weight:800;margin-top:6px"></div>
+      </div>
+      <div style="flex:1">
+        <div class="small">Цена</div>
+        <div id="modal-price" style="font-weight:800;margin-top:6px"></div>
+      </div>
     </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
-      <button onclick="closeSModal()" style="padding:8px 12px;border-radius:8px;background:#23303a;color:#fff;border:0">Отмена</button>
-      <button onclick="checkSCode()" style="padding:8px 12px;border-radius:8px;background:#f59e0b;color:#071029;border:0;font-weight:800">Проверить</button>
+    <input id="code-input" class="input" placeholder="Введите цифровой код для получения ссылки" inputmode="numeric">
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+      <button class="btn ghost" onclick="closeModal()">Отмена</button>
+      <button class="btn" onclick="checkCode()">Проверить код</button>
     </div>
-    <div id="s-result" class="small" style="margin-top:8px;color:#fde68a"></div>
+    <div id="modal-result" class="small" style="margin-top:10px;color:#fde68a"></div>
+
+    <div class="reviews" id="modal-reviews" style="margin-top:12px">
+      <div style="font-weight:800">Отзывы</div>
+      <div id="author-reco" style="margin-top:8px;font-weight:700;color:#fff"></div>
+      <div id="reviews-list"></div>
+
+      <div style="margin-top:8px;font-weight:800">Оставить отзыв</div>
+      <input id="rv-name" class="input" placeholder="Имя">
+      <select id="rv-stars" class="input">
+        <option value="5">★★★★★ (5)</option>
+        <option value="4">★★★★ (4)</option>
+        <option value="3">★★★ (3)</option>
+      </select>
+      <textarea id="rv-text" class="input" placeholder="Комментарий" style="min-height:70px"></textarea>
+      <div style="display:flex;justify-content:flex-end;margin-top:8px">
+        <button class="btn" onclick="submitReview()">Отправить</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-/* секретный набор (коды и данные) */
-const SECRET_KEY = "4321"; // пароль страницы
-const SECRET_ITEMS = {
-  pill1:{id:'pill1',title:'Таблетка: Радость',desc:'Мягкая волна подъёма настроения; художественная концепция.',points:95,price:150000,code:'9001',link:'#'},
-  pill2:{id:'pill2',title:'Таблетка: Смех',desc:'Вызывает искреннее веселье и лёгкость; художественно.',points:96,price:120000,code:'9002',link:'#'},
-  pill3:{id:'pill3',title:'Таблетка: Спокойствие',desc:'Глубокое спокойствие и баланс; художественная идея.',points:95,price:130000,code:'9003',link:'#'},
-  perfume1:{id:'perfume1',title:'Уверенность высшего уровня',desc:'Аромат для уверенного поведения и сильной презентации.',points:97,price:98000,code:'9101',link:'#'},
-  perfume2:{id:'perfume2',title:'Мечта девушек',desc:'Ноты, которые создают приятное впечатление и притягательность.',points:96,price:120000,code:'9102',link:'#'},
-  perfume3:{id:'perfume3',title:'Улучшение ума',desc:'Аромат для фокуса и ясности мышления (образно).',points:98,price:140000,code:'9103',link:'#'},
-  glasses_read:{id:'glasses_read',title:'Очки: Чтение мыслей',desc:'Позволяют (в художественной форме) чувствовать мысли и эмоции.',points:100,price:999000,code:'9998',link:'#'},
-  glasses_truth:{id:'glasses_truth',title:'Очки: Правда/Ложь',desc:'Отображают индикаторы правды и лжи в речи (художественно).',points:99,price:800000,code:'9999',link:'#'}
-};
+/* ------ данные (в одном месте) ------ */
+const SECRET_PASSWORD = "4321"; // пароль для секретного сектора (тот же в secret.html)
 
-let attempts = 3;
-function checkSecret(){
-  const v = document.getElementById('secret-input').value.trim();
-  const msg = document.getElementById('login-msg');
-  if(v === SECRET_KEY){
-    document.getElementById('login').classList.add('hidden');
-    document.getElementById('content').classList.remove('hidden');
-    msg.innerText='';
-  } else {
-    attempts--;
-    if(attempts<=0){ msg.innerText='Доступ закрыт.'; document.getElementById('secret-input').disabled=true; return }
-    msg.innerText = 'Неверный код. Осталось попыток: ' + attempts;
-  }
-}
+const ITEMS = [
+  // IDEAS (без картинок)
+  {id:'idea1',cat:'ideas',title:'Шпаргалка успеха',desc:'Короткие, рабочие приёмы для продуктивного дня: чек-листы, шаблоны и быстрые действия.',why:'Экономит время и даёт понятные шаги для результата. Подходит новичкам и тем, кто хочет систематизировать процесс.',points:88,price:4400,code:'1010',link:'https://medium.com/search?q=Шпаргалка+успеха',img:''},
+  {id:'idea2',cat:'ideas',title:'Мини-бизнес на дому',desc:'Пошаговый план запуска малого бизнеса с низкими затратами и примерами первых продаж.',why:'Позволяет стартовать быстро и минимизировать риски — готовая дорожная карта для старта.',points:86,price:4100,code:'1011',link:'https://medium.com/search?q=мини+бизнес+на+дому',img:''},
+  {id:'idea3',cat:'ideas',title:'Курс по самоорганизации',desc:'30-дневная программа по привычкам, тайм-менеджменту и фокусу.',why:'Создает устойчивую систему работы над задачами — результат виден уже через несколько недель.',points:90,price:5000,code:'1012',link:'https://medium.com/search?q=курс+по+самоорганизации',img:''},
+  {id:'idea4',cat:'ideas',title:'Мобильный проект (MVP)',desc:'Готовая концепция приложения: целевая аудитория, функции, MVP-план.',why:'Экономит время на продумывание продукта и ускоряет запуск на рынок.',points:85,price:3950,code:'1013',link:'https://medium.com/search?q=мобильный+проект+mvp',img:''},
+  {id:'idea5',cat:'ideas',title:'Комьюнити платформа',desc:'Стратегия создания сообщества и монетизации: контент-план, механики вовлечения.',why:'Дает инструмент для удержания аудитории и стабильного дохода.',points:87,price:4250,code:'1014',link:'https://medium.com/search?q=комьюнити+платформа',img:''},
+  {id:'idea6',cat:'ideas',title:'Креативный мерч',desc:'Идеи и расчёты линейки товара (футболки, кружки, стикеры) для быстрых продаж.',why:'Позволяет быстро протестировать рынок и получить прибыль при минимальных вложениях.',points:85,price:3800,code:'1015',link:'https://medium.com/search?q=креативный+мерч',img:''},
 
-/* покупка в секретном секторе */
-let sItem = null;
-function openSecretBuy(key){
-  sItem = SECRET_ITEMS[key];
-  document.getElementById('overlay').style.display = 'flex';
-  document.getElementById('s-title').innerText = sItem.title;
-  document.getElementById('s-desc').innerText = sItem.desc + '  (Баллы: ' + sItem.points + '/100; Цена: ' + sItem.price.toLocaleString() + ' ₸)';
-  document.getElementById('s-result').innerText = '';
-  document.getElementById('s-code').value = '';
+  // FILMS (с твоими постерами и ссылками)
+  {id:'film1',cat:'films',title:'Oppenheimer (2023)',desc:'Глубокая биографическая драма о создании ядерной программы; сильные актёрские работы и масштаб.',why:'Фильм вызывает мощные эмоции и даёт материал для обсуждения — полезно для мотивации и размышлений.',points:92,price:4550,code:'2010',link:'https://m.vk.com/video-220018529_456244232',img:'https://m.media-amazon.com/images/M/MV5BN2JkMDc5MGQtZjg3YS00NmFiLWIyZmQtZTJmNTM5MjVmYTQ4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg'},
+  {id:'film2',cat:'films',title:'Dune — Part One (2021)',desc:'Эпическая фантастическая сага с масштабным миром и сильной визуальной подачей.',why:'Для фанатов большого кино — впечатляющий опыт, который вдохновляет на амбициозные проекты.',points:95,price:4350,code:'2011',link:'https://vk.com/video-116989148_456239224',img:'https://upload.wikimedia.org/wikipedia/ru/6/61/%D0%94%D1%8E%D0%BD%D0%B0_%E2%80%94_%D0%A7%D0%B0%D1%81%D1%82%D1%8C_%D0%B2%D1%82%D0%BE%D1%80%D0%B0%D1%8F_%28%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80%29.jpg'},
+  {id:'film3',cat:'films',title:'Dune: Part Two (2024)',desc:'Продолжение эпопеи — сильная развязка и ещё более крупные сцены.',why:'Закрывает сюжетные линии и даёт мощный кинематографический опыт; стоит для полного понимания саги.',points:96,price:4450,code:'2012',link:'https://vk.com/video-180554744_456259749',img:'https://m.media-amazon.com/images/M/MV5BNThiZjA3MjItZGY5Ni00ZmJhLWEwN2EtOTBlYTA4Y2E0M2ZmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg'},
+  {id:'film4',cat:'films',title:'1+1 (Intouchables)',desc:'Тёплая драма о дружбе и взаимопомощи; фильм, который вдохновляет и показывает силу человеческих связей.',why:'Поднимает настроение и учит ценить простые вещи — отличный выбор для мотивации и эмпатии.',points:90,price:4000,code:'2013',link:'https://vk.com/video-220018529_456245543',img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrGSBWIu8ScZkD1myqvj04dTMKRS2tTvn2yUeX694nnv2UlxSt6D8xR9QV_Yy59TBE61E&usqp=CAU'},
+  {id:'film5',cat:'films',title:'John Wick: Chapter 4',desc:'Интенсивный, стильный экшн с превосходной хореографией и визуальным рядом.',why:'Для тех, кто любит динамику и мастерство — мотивирует действовать и не сдаваться.',points:95,price:4150,code:'2014',link:'https://vk.com/video-217081635_456240047',img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOC8RgxRmgQFBe1CKijMawO0TUCSNe5ihZpw&s'},
+  {id:'film6',cat:'films',title:'Spider-Man: Across the Spider-Verse (2023)',desc:'Анимация с уникальным визуальным стилем и современной историей о героях.',why:'Свежий взгляд на супергеройский жанр — визуальная энергия и вдохновение для творчества.',points:91,price:4200,code:'2015',link:'https://www.youtube.com/results?search_query=Spider-Man+Across+the+Spider-Verse+2023',img:'https://picsum.photos/seed/spider/800/500'},
+
+  // BOOKS (обложки + ссылки)
+  {id:'book1',cat:'books',title:'Atomic Habits — James Clear',desc:'Пошаговое руководство по формированию полезных привычек.',why:'Даёт простые техники, которые реально работают — быстро приносит результат в повседневной жизни.',points:89,price:4300,code:'3010',link:'https://www.google.com/search?tbm=bks&q=Atomic+Habits+James+Clear',img:'https://m.media-amazon.com/images/I/81kg51XRc1L._UF1000,1000_QL80_.jpg'},
+  {id:'book2',cat:'books',title:'The Midnight Library — Matt Haig',desc:'Роман о выборе и смысле жизни, который вдохновляет на изменения.',why:'Помогает по-новому посмотреть на решения и смелее менять жизнь.',points:88,price:4600,code:'3011',link:'https://www.google.com/search?tbm=bks&q=The+Midnight+Library+Matt+Haig',img:'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1602190253i/52578297.jpg'},
+  {id:'book3',cat:'books',title:'It Ends with Us — Colleen Hoover',desc:'Эмоциональный роман о любви и сложных решениях.',why:'Сильный, искренний текст, который остаётся в голове — для тех, кто ценит эмоциональную глубину.',points:90,price:3900,code:'3012',link:'https://www.google.com/search?tbm=bks&q=It+Ends+with+Us+Colleen+Hoover',img:'https://simg.marwin.kz/media/catalog/product/cache/8d1771fdd19ec2393e47701ba45e606d/i/t/hoover_c_it_ends_with_us.jpg'},
+  {id:'book4',cat:'books',title:'Project Hail Mary — Andy Weir',desc:'Увлекательная научная фантастика с сильной идеей и напряжённым сюжетом.',why:'Новый взгляд на научную фантастику — идеально, если любите интеллектуальное приключение.',points:92,price:4600,code:'3013',link:'https://www.google.com/search?tbm=bks&q=Project+Hail+Mary+Andy+Weir',img:'https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1597695864l/54493401.jpg'},
+  {id:'book5',cat:'books',title:'Fourth Wing — Rebecca Yarros',desc:'Свежий фэнтези-хит с динамичным сюжетом и сильными персонажами.',why:'Если хочется захватывающего фэнтези — эта книга даёт сильные эмоции и приключение.',points:87,price:3900,code:'3014',link:'https://www.google.com/search?tbm=bks&q=Fourth+Wing+Rebecca+Yarros',img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUwGroTFF1OwS4N8HxYt5_cTG0XUFZqLHclQ&s'}
+];
+
+/* ------ рендер (категории отдельно) ------ */
+function el(tag,cls,html){const e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e}
+function renderAll(){
+  const ideas = document.getElementById('ideas-grid');
+  const films = document.getElementById('films-grid');
+  const books = document.getElementById('books-grid');
+  ideas.innerHTML=''; films.innerHTML=''; books.innerHTML='';
+  ITEMS.forEach(it=>{
+    const card = el('div','card');
+    if(it.cat!=='ideas'){
+      const imgBox = el('div','img-wrap');
+      const img = el('img'); img.src = it.img || '';
+      img.alt = it.title;
+      imgBox.appendChild(img);
+      card.appendChild(imgBox);
+    }
+    card.appendChild(el('div','title',it.title));
+    card.appendChild(el('div','desc',it.desc));
+    card.appendChild(el('div','note','<strong>Почему стоит купить:</strong> '+it.why));
+    const meta = el('div','meta');
+    meta.appendChild(el('div','badge',it.points+'/100'));
+    meta.appendChild(el('div','price',it.price + ' ₸'));
+    card.appendChild(meta);
+    const btnRow = el('div','', '');
+    const buyBtn = el('button','btn','Купить');
+    buyBtn.onclick = ()=> openBuyModal(it);
+    btnRow.appendChild(buyBtn);
+    card.appendChild(btnRow);
+
+    // reviews preview: author recommend
+    const reviewsWrap = el('div','reviews');
+    reviewsWrap.innerHTML = '<div style="font-weight:800">Автор рекомендует</div><div class="small" style="margin-top:6px">Автор подтверждает качество и полезность этого материала.</div>';
+    card.appendChild(reviewsWrap);
+
+    if(it.cat==='ideas') ideas.appendChild(card)
+    else if(it.cat==='films') films.appendChild(card)
+    else if(it.cat==='books') books.appendChild(card)
+  });
 }
-function closeSModal(){ document.getElementById('overlay').style.display='none'; sItem=null; document.getElementById('s-result').innerText=''; }
-function checkSCode(){
-  const v = document.getElementById('s-code').value.trim();
-  const res = document.getElementById('s-result');
-  if(!v){res.innerText='Введите код';return}
-  if(sItem && v === sItem.code){
-    res.innerHTML = '✅ Код верный. Ссылка на покупку: <span style="color:#b7f5c0">тут может быть приватная ссылка</span>';
-    // сохранить в localStorage
-    const p = JSON.parse(localStorage.getItem('secret_purchases')||'[]');
-    p.push({id:sItem.id,time:Date.now()});
-    localStorage.setItem('secret_purchases', JSON.stringify(p));
-    setTimeout(()=>closeSModal(),1200);
+renderAll();
+
+/* ------ покупки (модал и проверка кода) ------ */
+let currentItem = null;
+function openBuyModal(item){
+  currentItem = item;
+  document.getElementById('overlay').style.display='flex';
+  document.getElementById('modal-title').innerText = item.title;
+  document.getElementById('modal-desc').innerText = item.desc;
+  document.getElementById('modal-why').innerText = 'Почему купить: ' + item.why;
+  document.getElementById('modal-points').innerText = item.points + '/100';
+  document.getElementById('modal-price').innerText = item.price + ' ₸';
+  document.getElementById('modal-result').innerText = '';
+  loadReviews(item.id);
+  document.getElementById('code-input').value='';
+}
+function closeModal(){document.getElementById('overlay').style.display='none'; currentItem=null}
+
+function checkCode(){
+  const v = document.getElementById('code-input').value.trim();
+  const res = document.getElementById('modal-result');
+  if(!v){res.innerText='Введите код'; return}
+  if(currentItem && v === currentItem.code){
+    // открыть ссылку
+    res.innerHTML = '✅ Код верный. Открытие ссылки...';
+    // сохранить покупки в localStorage
+    const p = JSON.parse(localStorage.getItem('purchases')||'[]');
+    p.push({id:currentItem.id, time:Date.now()});
+    localStorage.setItem('purchases', JSON.stringify(p));
+    updateCart();
+    window.open(currentItem.link, '_blank');
   } else {
     res.innerText = 'Неверный код';
   }
 }
 
-/* если пользователь попал на secret.html напрямую — можно попросить код сразу:
-   (необязательно) — здесь форма входа */
-window.addEventListener('load',()=>{
-  // пусто — ждём действия пользователя (форма)
-});
+/* ------ отзывы (локально) ------ */
+function reviewKey(id){return 'reviews_'+id}
+function loadReviews(id){
+  const arr = JSON.parse(localStorage.getItem(reviewKey(id))||'[]');
+  const list = document.getElementById('reviews-list');
+  list.innerHTML='';
+  arr.forEach(r=>{
+    const d = el('div','review',`<div style="font-weight:700">${escapeHtml(r.name)} <span style="color:#fcd34d"> ${'★'.repeat(r.stars)}</span></div><div class="small">${escapeHtml(r.text)}</div>`);
+    list.appendChild(d);
+  });
+  document.getElementById('author-reco').innerText = 'Автор рекомендует этот товар.';
+}
+function submitReview(){
+  if(!currentItem){alert('Откройте карточку товара');return}
+  const name = document.getElementById('rv-name').value.trim() || 'Покупатель';
+  const stars = parseInt(document.getElementById('rv-stars').value||5,10);
+  const text = document.getElementById('rv-text').value.trim();
+  if(!text){alert('Напишите комментарий'); return}
+  const key = reviewKey(currentItem.id);
+  const arr = JSON.parse(localStorage.getItem(key)||'[]');
+  arr.unshift({name,stars,text,time:Date.now()});
+  localStorage.setItem(key, JSON.stringify(arr));
+  loadReviews(currentItem.id);
+  document.getElementById('rv-name').value=''; document.getElementById('rv-text').value='';
+}
+
+/* ------ небольшие утилиты ------ */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function updateCart(){ const p = JSON.parse(localStorage.getItem('purchases')||'[]'); const elc = document.getElementById('cart'); if(p.length===0){elc.innerText='Пока покупок нет'} else { elc.innerHTML = p.map(x=>{const it = ITEMS.find(i=>i.id===x.id)||{title:x.id,price:0}; return `<div style="margin-bottom:6px;font-weight:700">${it.title} — ${it.price} ₸</div>`}).join('')}}
+updateCart();
+
+function scrollToSection(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+
+/* ------ секретный сектор: переход с промптом (пароль SECRET_PASSWORD) ------ */
+function openSecretPrompt(){
+  const code = prompt('Введите 4-значный код для доступа к секретному сектору:');
+  if(code === SECRET_PASSWORD){ window.location.href = 'secret.html' }
+  else { alert('Неверный код') }
+}
 </script>
 </body>
 </html>
