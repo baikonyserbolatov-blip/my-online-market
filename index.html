@@ -1,210 +1,186 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Онлайн-магазин идей и секретов</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; }
-    header { background:#222; color:#fff; padding:15px; text-align:center; }
-    nav a { margin:0 10px; color:#fff; text-decoration:none; font-weight:bold; }
-    .container { padding:20px; display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
-    .item { background:#fff; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.1); padding:15px; text-align:center; }
-    .item img { max-width:100%; border-radius:10px; margin-bottom:10px; }
-    .item h3 { margin:10px 0; }
-    .price { font-weight:bold; margin:10px 0; color:#2a7; }
-    footer { background:#222; color:#fff; text-align:center; padding:20px; margin-top:20px; }
-    /* модальное окно */
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); justify-content:center; align-items:center; }
-    .modal-content { background:#fff; padding:20px; border-radius:10px; text-align:center; max-width:400px; }
-    .modal-content img { max-width:200px; border-radius:10px; margin-bottom:15px; }
-    .modal-content button { margin:10px; padding:10px 20px; border:none; border-radius:8px; background:#2a7; color:#fff; cursor:pointer; }
-    .modal-content button:hover { background:#185; }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Секретный сектор</title>
+<style>
+  :root{--bg:#071029;--card:#0b1220;--accent:#f59e0b;--muted:#9aa4b2}
+  body{margin:0;background:linear-gradient(180deg,#071029,#021024);font-family:Inter,Arial,sans-serif;color:#fff}
+  header{padding:18px;text-align:center;background:rgba(255,255,255,0.03)}
+  .wrap{max-width:980px;margin:26px auto;padding:0 16px}
+  .panel{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,0.6)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:12px}
+  .card{background:linear-gradient(180deg,#081226,#091a2e);border-radius:10px;padding:12px}
+  .card h3{margin:6px 0}
+  .card p{color:var(--muted);font-size:14px}
+  .price{color:var(--accent);font-weight:800;margin-top:8px}
+  .btn{margin-top:10px;background:linear-gradient(90deg,#f59e0b,#f97316);color:#081226;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:800}
+  .login-screen{max-width:420px;margin:40px auto;text-align:center}
+  input{padding:10px;border-radius:8px;border:0;width:80%;margin-top:12px}
+  .small{font-size:13px;color:var(--muted)}
+  .hidden{display:none}
+</style>
 </head>
 <body>
+<header><h1>Секретный сектор</h1><div class="small">Доступ только по коду</div></header>
 
-<header>
-  <h1>Онлайн-магазин</h1>
-  <nav>
-    <a href="#tovary">Товары</a>
-    <a href="#secret">Секретный сектор</a>
-  </nav>
-</header>
-
-<!-- Первый раздел -->
-<section id="tovary">
-  <h2 style="text-align:center;margin:20px 0;">Товары</h2>
-  <div class="container">
-
-    <!-- Идеи -->
-    <div class="item">
-      <h3>Идея: Утренние привычки</h3>
-      <p>Начинай день с продуктивных действий: зарядка, чтение, планирование.</p>
-      <p class="price">Цена: 90 баллов / 1500 ₸</p>
-      <button onclick="openDirect('1010','https://example.com/idea1')">Купить</button>
+<div class="wrap">
+  <div id="login" class="panel login-screen">
+    <h2>Введите код</h2>
+    <input id="secret-input" placeholder="4 цифры" inputmode="numeric" maxlength="6">
+    <div style="margin-top:12px">
+      <button class="btn" onclick="checkSecret()">Войти</button>
     </div>
-    <div class="item">
-      <h3>Идея: Тайм-менеджмент</h3>
-      <p>Методы планирования, которые помогают достигать целей.</p>
-      <p class="price">Цена: 92 балла / 1800 ₸</p>
-      <button onclick="openDirect('1020','https://example.com/idea2')">Купить</button>
-    </div>
-    <div class="item">
-      <h3>Идея: Финансовая грамотность</h3>
-      <p>Как правильно управлять деньгами и приумножать капитал.</p>
-      <p class="price">Цена: 93 балла / 2000 ₸</p>
-      <button onclick="openDirect('1030','https://example.com/idea3')">Купить</button>
-    </div>
-    <div class="item">
-      <h3>Идея: Сила воли</h3>
-      <p>Техники самоконтроля для достижения успеха.</p>
-      <p class="price">Цена: 91 балл / 1600 ₸</p>
-      <button onclick="openDirect('1040','https://example.com/idea4')">Купить</button>
-    </div>
-    <div class="item">
-      <h3>Идея: Успешные привычки</h3>
-      <p>Что объединяет миллиардеров и лидеров.</p>
-      <p class="price">Цена: 94 балла / 2100 ₸</p>
-      <button onclick="openDirect('1050','https://example.com/idea5')">Купить</button>
-    </div>
-    <div class="item">
-      <h3>Идея: Энергия дня</h3>
-      <p>Как сохранять силы и мотивацию до вечера.</p>
-      <p class="price">Цена: 95 баллов / 2200 ₸</p>
-      <button onclick="openDirect('1060','https://example.com/idea6')">Купить</button>
-    </div>
-
-    <!-- Фильмы -->
-    <div class="item">
-      <img src="https://m.media-amazon.com/images/M/MV5BN2JkMDc5MGQtZjg3YS00NmFiLWIyZmQtZTJmNTM5MjVmYTQ4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Оппенгеймер">
-      <h3>Фильм: Оппенгеймер</h3>
-      <p>История человека, изменившего мир. Мощная драма и мотивация.</p>
-      <p class="price">Цена: 95 баллов / 2000 ₸</p>
-      <button onclick="openDirect('1111','https://m.vk.com/video-220018529_456244232')">Купить</button>
-    </div>
-    <div class="item">
-      <img src="https://upload.wikimedia.org/wikipedia/ru/6/61/%D0%94%D1%8E%D0%BD%D0%B0_%E2%80%94_%D0%A7%D0%B0%D1%81%D1%82%D1%8C_%D0%B2%D1%82%D0%BE%D1%80%D0%B0%D1%8F_%28%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80%29.jpg" alt="Дюна">
-      <h3>Фильм: Дюна 1 и 2</h3>
-      <p>Фантастика о судьбе, лидерстве и смелости.</p>
-      <p class="price">Цена: 96 баллов / 2200 ₸</p>
-      <button onclick="openDirect('1121','https://vk.com/video-116989148_456239224')">Купить</button>
-    </div>
-    <div class="item">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrGSBWIu8ScZkD1myqvj04dTMKRS2tTvn2yUeX694nnv2UlxSt6D8xR9QV_Yy59TBE61E&usqp=CAU" alt="1+1">
-      <h3>Фильм: 1+1</h3>
-      <p>История дружбы, которая вдохновляет ценить жизнь.</p>
-      <p class="price">Цена: 95 баллов / 1900 ₸</p>
-      <button onclick="openDirect('1144','https://vk.com/video-220018529_456245543')">Купить</button>
-    </div>
-    <div class="item">
-      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOC8RgxRmgQFBe1CKijMawO0TUCSNe5ihZpw&s" alt="Джон Уик">
-      <h3>Фильм: Джон Уик (серия)</h3>
-      <p>Борьба за справедливость. Фильмы о силе и стойкости.</p>
-      <p class="price">Цена: 97 баллов / 2500 ₸</p>
-      <button onclick="openDirect('1133','https://vk.com/video-225726619_456239075')">Купить</button>
-    </div>
-
-    <!-- Книги -->
-    <div class="item">
-      <img src="https://m.media-amazon.com/images/I/81kg51XRc1L._UF1000,1000_QL80_.jpg" alt="It Ends With Us">
-      <h3>Книга: It Ends With Us</h3>
-      <p>Трогательная история о любви и выборе.</p>
-      <p class="price">Цена: 88 баллов / 1600 ₸</p>
-      <button onclick="openDirect('1210','https://www.goodreads.com/book/show/27362503-it-ends-with-us')">Купить</button>
-    </div>
-    <div class="item">
-      <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1602190253i/52578297.jpg" alt="It Starts With Us">
-      <h3>Книга: It Starts With Us</h3>
-      <p>Продолжение истории, которое вдохновляет.</p>
-      <p class="price">Цена: 89 баллов / 1700 ₸</p>
-      <button onclick="openDirect('1220','https://www.goodreads.com/book/show/60393672-it-starts-with-us')">Купить</button>
-    </div>
-    <div class="item">
-      <img src="https://simg.marwin.kz/media/catalog/product/cache/8d1771fdd19ec2393e47701ba45e606d/i/t/hoover_c_it_ends_with_us.jpg" alt="Ugly Love">
-      <h3>Книга: Ugly Love</h3>
-      <p>О чувствах и ошибках, которые делают нас людьми.</p>
-      <p class="price">Цена: 90 баллов / 1800 ₸</p>
-      <button onclick="openDirect('1230','https://www.goodreads.com/book/show/17788401-ugly-love')">Купить</button>
-    </div>
-
+    <div id="login-msg" class="small" style="margin-top:8px;color:#fecaca"></div>
   </div>
-</section>
 
-<!-- Секретный сектор -->
-<section id="secret">
-  <h2 style="text-align:center;margin:20px 0;">Секретный сектор</h2>
-  <div class="container">
-    <div class="item">
-      <h3>Парфюм: Уверенность высшего уровня</h3>
-      <p>Дарит решимость и спокойствие в любой ситуации.</p>
-      <p class="price">Цена: 98 баллов / 5000 ₸</p>
-      <button onclick="openDirect('2111','https://example.com/confidence')">Купить</button>
+  <div id="content" class="hidden">
+    <div class="panel">
+      <h2>Эмоции (художественная концепция)</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Таблетка: Радость</h3>
+          <p>Мягкая, тёплая волна подъёма настроения — помогает видеть светлые стороны и активнее действовать.</p>
+          <div class="price">95 баллов | 150 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('pill1')">Купить</button>
+        </div>
+        <div class="card">
+          <h3>Таблетка: Смех</h3>
+          <p>Подарит лёгкость и искренний смех; снимает тяжесть и возвращает лёгкость общения.</p>
+          <div class="price">96 баллов | 120 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('pill2')">Купить</button>
+        </div>
+        <div class="card">
+          <h3>Таблетка: Спокойствие</h3>
+          <p>Глубокое внутреннее спокойствие без отвлекающих мыслей; помогает сфокусироваться на главном.</p>
+          <div class="price">95 баллов | 130 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('pill3')">Купить</button>
+        </div>
+      </div>
     </div>
-    <div class="item">
-      <h3>Парфюм: Мечта девушек</h3>
-      <p>Притягательный аромат, который нравится каждой.</p>
-      <p class="price">Цена: 99 баллов / 7000 ₸</p>
-      <button onclick="openDirect('2222','https://example.com/dream')">Купить</button>
+
+    <div class="panel" style="margin-top:16px">
+      <h2>Парфюмы способностей</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Уверенность высшего уровня</h3>
+          <p>Аромат, который подчёркивает осанку и голос — помогает чувствовать себя увереннее в деловых и личных ситуациях.</p>
+          <div class="price">97 баллов | 98 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('perfume1')">Купить</button>
+        </div>
+        <div class="card">
+          <h3>Мечта девушек</h3>
+          <p>Ноты, которые создают приятное впечатление и повышают притяжение — для тех, кто хочет усилить харизму.</p>
+          <div class="price">96 баллов | 120 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('perfume2')">Купить</button>
+        </div>
+        <div class="card">
+          <h3>Улучшение ума</h3>
+          <p>Аромат, стимулирующий концентрацию и ясность — помогает в учебе и работе (образно).</p>
+          <div class="price">98 баллов | 140 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('perfume3')">Купить</button>
+        </div>
+      </div>
     </div>
-    <div class="item">
-      <h3>Парфюм: Улучшение ума</h3>
-      <p>Запах, который помогает мозгу работать быстрее.</p>
-      <p class="price">Цена: 99 баллов / 7500 ₸</p>
-      <button onclick="openDirect('2333','https://example.com/intellect')">Купить</button>
-    </div>
-    <div class="item">
-      <h3>Очки: Чтение мыслей</h3>
-      <p>Позволяют видеть, о чем думает человек.</p>
-      <p class="price">Цена: 100 баллов / 10000 ₸</p>
-      <button onclick="openDirect('2444','https://example.com/mindreading')">Купить</button>
-    </div>
-    <div class="item">
-      <h3>Очки: Видение лжи или правды</h3>
-      <p>Раскрывают истинные слова собеседника.</p>
-      <p class="price">Цена: 100 баллов / 12000 ₸</p>
-      <button onclick="openDirect('2555','https://example.com/truth')">Купить</button>
+
+    <div class="panel" style="margin-top:16px">
+      <h2>Артефакты — Очки</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Очки: Чтение мыслей</h3>
+          <p>Позволяют воспринимать эмоции и домыслы собеседника (художественно). Редкий артефакт для особых случаев.</p>
+          <div class="price">100 баллов | 999 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('glasses_read')">Купить</button>
+        </div>
+        <div class="card">
+          <h3>Очки: Правда/Ложь</h3>
+          <p>Режим отображает признаки правды и лжи в речи — помогает в переговорах и общении (художественно).</p>
+          <div class="price">99 баллов | 800 000 ₸</div>
+          <button class="btn" onclick="openSecretBuy('glasses_truth')">Купить</button>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
-<footer>
-  <p>© 2025 Автор проекта. Связь: Instagram, Telegram</p>
-</footer>
-
-<!-- модальное окно -->
-<div id="directModal" class="modal">
-  <div class="modal-content">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQGWCAFi8jWypYEff1h5EfPPnVu3ao0qo26pQ&s" alt="Direct">
-    <p>Чтобы получить код, напишите мне в директ.</p>
-    <button onclick="openCodeModal()">У меня уже есть код</button>
-    <button onclick="closeModal()">Закрыть</button>
+<!-- secret buy modal -->
+<div id="overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:90">
+  <div style="background:#071029;padding:18px;border-radius:10px;max-width:520px;width:92%;color:#fff">
+    <div id="s-title" style="font-weight:800"></div>
+    <div id="s-desc" class="small" style="margin-top:8px"></div>
+    <div style="margin-top:10px">
+      <input id="s-code" placeholder="Введите код товара" style="padding:10px;border-radius:8px;width:100%;border:0">
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+      <button onclick="closeSModal()" style="padding:8px 12px;border-radius:8px;background:#23303a;color:#fff;border:0">Отмена</button>
+      <button onclick="checkSCode()" style="padding:8px 12px;border-radius:8px;background:#f59e0b;color:#071029;border:0;font-weight:800">Проверить</button>
+    </div>
+    <div id="s-result" class="small" style="margin-top:8px;color:#fde68a"></div>
   </div>
 </div>
 
 <script>
-let currentCode = "";
-let currentLink = "";
+/* секретный набор (коды и данные) */
+const SECRET_KEY = "4321"; // пароль страницы
+const SECRET_ITEMS = {
+  pill1:{id:'pill1',title:'Таблетка: Радость',desc:'Мягкая волна подъёма настроения; художественная концепция.',points:95,price:150000,code:'9001',link:'#'},
+  pill2:{id:'pill2',title:'Таблетка: Смех',desc:'Вызывает искреннее веселье и лёгкость; художественно.',points:96,price:120000,code:'9002',link:'#'},
+  pill3:{id:'pill3',title:'Таблетка: Спокойствие',desc:'Глубокое спокойствие и баланс; художественная идея.',points:95,price:130000,code:'9003',link:'#'},
+  perfume1:{id:'perfume1',title:'Уверенность высшего уровня',desc:'Аромат для уверенного поведения и сильной презентации.',points:97,price:98000,code:'9101',link:'#'},
+  perfume2:{id:'perfume2',title:'Мечта девушек',desc:'Ноты, которые создают приятное впечатление и притягательность.',points:96,price:120000,code:'9102',link:'#'},
+  perfume3:{id:'perfume3',title:'Улучшение ума',desc:'Аромат для фокуса и ясности мышления (образно).',points:98,price:140000,code:'9103',link:'#'},
+  glasses_read:{id:'glasses_read',title:'Очки: Чтение мыслей',desc:'Позволяют (в художественной форме) чувствовать мысли и эмоции.',points:100,price:999000,code:'9998',link:'#'},
+  glasses_truth:{id:'glasses_truth',title:'Очки: Правда/Ложь',desc:'Отображают индикаторы правды и лжи в речи (художественно).',points:99,price:800000,code:'9999',link:'#'}
+};
 
-function openDirect(code, link) {
-  currentCode = code;
-  currentLink = link;
-  document.getElementById("directModal").style.display = "flex";
-}
-
-function openCodeModal() {
-  let entered = prompt("Введите код для товара:");
-  if(entered === currentCode){
-    window.open(currentLink, "_blank");
+let attempts = 3;
+function checkSecret(){
+  const v = document.getElementById('secret-input').value.trim();
+  const msg = document.getElementById('login-msg');
+  if(v === SECRET_KEY){
+    document.getElementById('login').classList.add('hidden');
+    document.getElementById('content').classList.remove('hidden');
+    msg.innerText='';
   } else {
-    alert("Неверный код!");
+    attempts--;
+    if(attempts<=0){ msg.innerText='Доступ закрыт.'; document.getElementById('secret-input').disabled=true; return }
+    msg.innerText = 'Неверный код. Осталось попыток: ' + attempts;
   }
-  closeModal();
 }
 
-function closeModal() {
-  document.getElementById("directModal").style.display = "none";
+/* покупка в секретном секторе */
+let sItem = null;
+function openSecretBuy(key){
+  sItem = SECRET_ITEMS[key];
+  document.getElementById('overlay').style.display = 'flex';
+  document.getElementById('s-title').innerText = sItem.title;
+  document.getElementById('s-desc').innerText = sItem.desc + '  (Баллы: ' + sItem.points + '/100; Цена: ' + sItem.price.toLocaleString() + ' ₸)';
+  document.getElementById('s-result').innerText = '';
+  document.getElementById('s-code').value = '';
 }
+function closeSModal(){ document.getElementById('overlay').style.display='none'; sItem=null; document.getElementById('s-result').innerText=''; }
+function checkSCode(){
+  const v = document.getElementById('s-code').value.trim();
+  const res = document.getElementById('s-result');
+  if(!v){res.innerText='Введите код';return}
+  if(sItem && v === sItem.code){
+    res.innerHTML = '✅ Код верный. Ссылка на покупку: <span style="color:#b7f5c0">тут может быть приватная ссылка</span>';
+    // сохранить в localStorage
+    const p = JSON.parse(localStorage.getItem('secret_purchases')||'[]');
+    p.push({id:sItem.id,time:Date.now()});
+    localStorage.setItem('secret_purchases', JSON.stringify(p));
+    setTimeout(()=>closeSModal(),1200);
+  } else {
+    res.innerText = 'Неверный код';
+  }
+}
+
+/* если пользователь попал на secret.html напрямую — можно попросить код сразу:
+   (необязательно) — здесь форма входа */
+window.addEventListener('load',()=>{
+  // пусто — ждём действия пользователя (форма)
+});
 </script>
-
 </body>
 </html>
