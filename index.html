@@ -2,111 +2,155 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Магазин идей и секретов</title>
+  <title>Товары</title>
   <style>
-    body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f4; color:#222;}
-    header {background:#222; color:#fff; padding:15px; text-align:center;}
-    nav {display:flex; justify-content:center; gap:20px; margin:15px;}
-    nav a {text-decoration:none; color:#222; font-weight:bold; padding:10px 20px; border:2px solid #222; border-radius:8px; background:#fff; transition:0.3s;}
-    nav a:hover {background:#222; color:#fff;}
-    .container {display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:20px; padding:20px;}
-    .item {background:#fff; border-radius:12px; padding:15px; box-shadow:0 2px 6px rgba(0,0,0,0.2);}
-    .item img {width:100%; height:200px; object-fit:cover; border-radius:10px;}
+    body {font-family: Arial, sans-serif; margin:0; padding:0; background:#f4f4f9; color:#333;}
+    header {background:#2c3e50; color:#fff; padding:20px; text-align:center;}
+    nav {background:#34495e; padding:10px; text-align:center;}
+    nav a {color:#fff; margin:0 15px; text-decoration:none; font-weight:bold;}
+    .section {padding:40px 20px;}
+    .items {display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px;}
+    .item {background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); padding:15px; text-align:center;}
+    .item img {max-width:100%; border-radius:10px;}
     .price {margin:10px 0; font-weight:bold;}
-    .reviews {margin-top:15px; padding:10px; background:#f9f9f9; border-radius:8px;}
-    .review {border-bottom:1px solid #ddd; padding:5px 0;}
-    .review:last-child{border-bottom:none;}
-    form {margin-top:10px;}
-    input, select, textarea {width:100%; margin:5px 0; padding:8px; border:1px solid #ccc; border-radius:6px;}
-    button {padding:8px 15px; background:#222; color:#fff; border:none; border-radius:6px; cursor:pointer;}
-    footer {background:#222; color:#fff; text-align:center; padding:20px; margin-top:30px;}
+    .reviews {margin-top:15px; text-align:left;}
+    .review {border-top:1px solid #ddd; padding:5px 0;}
+    footer {background:#2c3e50; color:#fff; text-align:center; padding:20px;}
+    button {background:#27ae60; color:#fff; border:none; padding:10px 15px; border-radius:5px; cursor:pointer;}
+    button:hover {background:#219150;}
   </style>
 </head>
 <body>
+  <header>
+    <h1>Добро пожаловать в магазин идей, фильмов и книг</h1>
+  </header>
+  <nav>
+    <a href="#ideas">Идеи</a>
+    <a href="#films">Фильмы</a>
+    <a href="#books">Книги</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="#" onclick="enterSecret()">Секретный сектор</a>
+  </nav>
 
-<header>
-  <h1>Добро пожаловать в Магазин</h1>
-  <p>Здесь вы найдёте идеи, фильмы, книги и секретные товары</p>
-</header>
-
-<nav>
-  <a href="index.html">Товары</a>
-  <a href="secret.html">Секретный сектор</a>
-</nav>
-
-<div class="container" id="products"></div>
-
-<footer>
-  <h3>О нас</h3>
-  <p>Автор проекта: Я — предлагаю лучшие идеи, книги и товары для мотивации и вдохновения.</p>
-  <p>Соцсети: Instagram | Telegram | VK</p>
-</footer>
-
-<script>
-const items = [
-  // IDEAS
-  {id:'idea1',cat:'ideas',title:'Шпаргалка успеха',desc:'Практические приёмы для продуктивности. Подходит тем, кто хочет быстрых результатов.',points:88,price:4400,code:'1010',link:'https://medium.com/search?q=Шпаргалка+успеха',img:''},
-  {id:'idea2',cat:'ideas',title:'Мини-бизнес на дому',desc:'Пошаговый план запуска малого бизнеса. Отличается простотой и низкими затратами.',points:86,price:4100,code:'1011',link:'https://medium.com/search?q=мини+бизнес+на+дому',img:''},
-  {id:'idea3',cat:'ideas',title:'Курс по самоорганизации',desc:'30-дневная программа по формированию привычек. Отличается структурированностью и результативностью.',points:90,price:5000,code:'1012',link:'https://medium.com/search?q=курс+по+самоорганизации',img:''},
-
-  // FILMS
-  {id:'film1',cat:'films',title:'Oppenheimer (2023)',desc:'Драма о создании ядерного проекта. Стоит купить за масштаб и глубину.',points:92,price:4550,code:'2010',link:'https://m.vk.com/video-220018529_456244232',img:'https://m.media-amazon.com/images/M/MV5BN2JkMDc5MGQtZjg3YS00NmFiLWIyZmQtZTJmNTM5MjVmYTQ4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg'},
-  {id:'film2',cat:'films',title:'Dune — Part One (2021)',desc:'Эпическая фантастика. Стоит купить за визуал и сюжет.',points:95,price:4350,code:'2011',link:'https://vk.com/video-116989148_456239224',img:'https://upload.wikimedia.org/wikipedia/ru/6/61/%D0%94%D1%8E%D0%BD%D0%B0_%E2%80%94_%D0%A7%D0%B0%D1%81%D1%82%D1%8C_%D0%B2%D1%82%D0%BE%D1%80%D0%B0%D1%8F_%28%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80%29.jpg'},
-  {id:'film3',cat:'films',title:'Intouchables (1+1)',desc:'Фильм о дружбе и жизни. Отличается душевностью и юмором.',points:90,price:4000,code:'2012',link:'https://vk.com/video-220018529_456245543',img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrGSBWIu8ScZkD1myqvj04dTMKRS2tTvn2yUeX694nnv2UlxSt6D8xR9QV_Yy59TBE61E&usqp=CAU'},
-
-  // BOOKS
-  {id:'book1',cat:'books',title:'Atomic Habits',desc:'Книга Джеймса Клири о привычках. Отличается практичностью.',points:89,price:4300,code:'3010',link:'https://www.google.com/search?tbm=bks&q=Atomic+Habits+James+Clear',img:'https://m.media-amazon.com/images/I/81kg51XRc1L._UF1000,1000_QL80_.jpg'},
-  {id:'book2',cat:'books',title:'The Midnight Library',desc:'Роман Мэтта Хейга. Отличается философским смыслом.',points:88,price:4600,code:'3011',link:'https://www.google.com/search?tbm=bks&q=The+Midnight+Library+Matt+Haig',img:'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1602190253i/52578297.jpg'},
-  {id:'book3',cat:'books',title:'It Ends with Us',desc:'Эмоциональный роман Коллин Гувер. Отличается искренностью.',points:90,price:3900,code:'3012',link:'https://www.google.com/search?tbm=bks&q=It+Ends+with+Us+Colleen+Hoover',img:'https://simg.marwin.kz/media/catalog/product/cache/8d1771fdd19ec2393e47701ba45e606d/i/t/hoover_c_it_ends_with_us.jpg'}
-];
-
-const container = document.getElementById('products');
-
-items.forEach(i=>{
-  let div=document.createElement('div');
-  div.className='item';
-  div.innerHTML=`
-    ${i.img?`<img src="${i.img}" alt="${i.title}">`:''}
-    <h3>${i.title}</h3>
-    <p>${i.desc}</p>
-    <p class="price">Оценка: ${i.points}/100 | Цена: ${i.price}₸</p>
-    <button onclick="buyItem('${i.id}')">Купить</button>
-    <div class="reviews" id="reviews-${i.id}">
-      <h4>Отзывы</h4>
-      <div class="review"><strong>Автор рекомендует:</strong> Этот товар имеет отличную репутацию и проверен мной лично.</div>
+  <!-- Идеи -->
+  <section class="section" id="ideas">
+    <h2>Идеи</h2>
+    <div class="items">
+      <div class="item">
+        <h3>Идея №1</h3>
+        <p>Уникальная бизнес-идея, которая поможет найти новые возможности.</p>
+        <p class="price">Цена: 90 баллов / 1500₸</p>
+      </div>
+      <div class="item">
+        <h3>Идея №2</h3>
+        <p>Мотивационная концепция, которая изменит привычный взгляд на жизнь.</p>
+        <p class="price">Цена: 85 баллов / 1300₸</p>
+      </div>
+      <div class="item">
+        <h3>Идея №3</h3>
+        <p>Совет по личной эффективности, который поднимет продуктивность.</p>
+        <p class="price">Цена: 92 балла / 1700₸</p>
+      </div>
     </div>
-    <form onsubmit="addReview(event,'${i.id}')">
-      <input type="text" name="name" placeholder="Ваше имя" required>
-      <select name="stars">
-        <option value="5">⭐⭐⭐⭐⭐</option>
-        <option value="4">⭐⭐⭐⭐</option>
-        <option value="3">⭐⭐⭐</option>
-      </select>
-      <textarea name="comment" placeholder="Комментарий: почему стоит купить?" required></textarea>
-      <button type="submit">Оставить отзыв</button>
-    </form>
-  `;
-  container.appendChild(div);
-});
+  </section>
 
-function buyItem(id){
-  const item = items.find(x=>x.id===id);
-  let code = prompt("Введите код для товара: "+item.title);
-  if(code===item.code){ window.open(item.link,'_blank'); }
-  else { alert("Неверный код!"); }
-}
+  <!-- Фильмы -->
+  <section class="section" id="films">
+    <h2>Мотивационные фильмы</h2>
+    <div class="items">
+      <div class="item">
+        <img src="https://m.media-amazon.com/images/M/MV5BN2JkMDc5MGQtZjg3YS00NmFiLWIyZmQtZTJmNTM5MjVmYTQ4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Оппенгеймер">
+        <h3>Оппенгеймер</h3>
+        <p>История человека, изменившего мир. Фильм о гениях и последствиях их открытий.</p>
+        <p class="price">Цена: 95 баллов / 2000₸</p>
+        <a href="https://m.vk.com/video-220018529_456244232">Смотреть</a>
+      </div>
+      <div class="item">
+        <img src="https://upload.wikimedia.org/wikipedia/ru/6/61/%D0%94%D1%8E%D0%BD%D0%B0_%E2%80%94_%D0%A7%D0%B0%D1%81%D1%82%D1%8C_%D0%B2%D1%82%D0%BE%D1%80%D0%B0%D1%8F_%28%D0%BF%D0%BE%D1%81%D1%82%D0%B5%D1%80%29.jpg" alt="Дюна">
+        <h3>Дюна (1 и 2)</h3>
+        <p>Эпическая фантастика о власти, судьбе и борьбе за будущее человечества.</p>
+        <p class="price">Цена: 96 баллов / 2100₸</p>
+        <a href="https://vk.com/video-116989148_456239224">Смотреть часть 1</a><br>
+        <a href="https://vk.com/video-180554744_456259749">Смотреть часть 2</a>
+      </div>
+      <div class="item">
+        <img src="https://m.media-amazon.com/images/M/MV5BNThiZjA3MjItZGY5Ni00ZmJhLWEwN2EtOTBlYTA4Y2E0M2ZmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg" alt="Фильм 3">
+        <h3>Волк с Уолл-стрит</h3>
+        <p>Фильм о взлётах и падениях, богатстве и мотивации достигать большего.</p>
+        <p class="price">Цена: 95 баллов / 1900₸</p>
+        <a href="https://vk.com/video-92678993_456240265">Смотреть</a>
+      </div>
+    </div>
+  </section>
 
-function addReview(e,id){
-  e.preventDefault();
-  let f=e.target;
-  let name=f.name.value, stars=f.stars.value, comment=f.comment.value;
-  let reviews=document.getElementById('reviews-'+id);
-  let div=document.createElement('div');
-  div.className='review';
-  div.innerHTML=`<strong>${name}:</strong> ${'⭐'.repeat(stars)}<br>${comment}`;
-  reviews.appendChild(div);
-  f.reset();
-}
-</script>
+  <!-- Книги -->
+  <section class="section" id="books">
+    <h2>Книги</h2>
+    <div class="items">
+      <div class="item">
+        <img src="https://m.media-amazon.com/images/I/81kg51XRc1L._UF1000,1000_QL80_.jpg" alt="Book1">
+        <h3>Atomic Habits</h3>
+        <p>Книга о том, как маленькие привычки создают большие перемены.</p>
+        <p class="price">Цена: 88 баллов / 1600₸</p>
+        <a href="https://www.goodreads.com/book/show/40121378-atomic-habits">Читать</a>
+      </div>
+      <div class="item">
+        <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1602190253i/52578297.jpg" alt="Book2">
+        <h3>Think Again</h3>
+        <p>Как научиться менять мнение и принимать более мудрые решения.</p>
+        <p class="price">Цена: 90 баллов / 1700₸</p>
+        <a href="https://www.goodreads.com/book/show/55539565-think-again">Читать</a>
+      </div>
+      <div class="item">
+        <img src="https://simg.marwin.kz/media/catalog/product/cache/8d1771fdd19ec2393e47701ba45e606d/i/t/hoover_c_it_ends_with_us.jpg" alt="Book3">
+        <h3>It Ends With Us</h3>
+        <p>Эмоциональная история любви, силы и выбора.</p>
+        <p class="price">Цена: 92 балла / 1800₸</p>
+        <a href="https://www.goodreads.com/book/show/27362503-it-ends-with-us">Читать</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Отзывы -->
+  <section class="section" id="reviews">
+    <h2>Отзывы</h2>
+    <div id="review-list"></div>
+    <h3>Оставить отзыв</h3>
+    <input type="text" id="name" placeholder="Ваше имя"><br><br>
+    <input type="number" id="stars" placeholder="Оценка (1-5)"><br><br>
+    <textarea id="comment" placeholder="Комментарий"></textarea><br><br>
+    <button onclick="addReview()">Отправить</button>
+  </section>
+
+  <footer>
+    <p>Автор рекомендует. Связаться со мной: <a href="#">Instagram</a> | <a href="#">Telegram</a></p>
+  </footer>
+
+  <script>
+    function enterSecret(){
+      let code = prompt("Введите 4-значный код для входа:");
+      if(code === "1234"){
+        window.location.href = "secret.html";
+      } else {
+        alert("Неверный код!");
+      }
+    }
+    function addReview(){
+      let name = document.getElementById("name").value;
+      let stars = document.getElementById("stars").value;
+      let comment = document.getElementById("comment").value;
+      if(name && stars && comment){
+        let div = document.createElement("div");
+        div.classList.add("review");
+        div.innerHTML = `<strong>${name}</strong> (${stars}⭐): ${comment}`;
+        document.getElementById("review-list").appendChild(div);
+        document.getElementById("name").value = "";
+        document.getElementById("stars").value = "";
+        document.getElementById("comment").value = "";
+      } else {
+        alert("Заполните все поля!");
+      }
+    }
+  </script>
 </body>
 </html>
